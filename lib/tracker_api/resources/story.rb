@@ -43,6 +43,10 @@ module TrackerApi
           @tasks = Endpoints::Tasks.new(client).get(project_id, id, params)
         end
       end
+
+      def activity_events(params = {})
+        Endpoints::ActivityEvents.new(client).get(project_id, id, params)
+      end
     end
   end
 end

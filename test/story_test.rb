@@ -30,4 +30,21 @@ describe TrackerApi::Resources::Story do
       end
     end
   end
+
+  describe '.activity_events' do
+    it 'gets all activity events for this story' do
+      VCR.use_cassette('get activity', record: :new_episodes) do
+        activity_events = project.story('66728004').activity_events
+
+        activity_events.wont_be_empty
+        activity_event = activity_events.first
+        activity_event.must_be_instance_of TrackerApi::Resources::ActivityEvent
+
+        activity_event.changes.wont_be_empty
+        change = activity_event.changes.first
+        change.must_be_instance_of TrackerApi::Resources::Change
+        change.new_values.must_be_instance_of TrackerApi::Resources::Story
+      end
+    end
+  end
 end
